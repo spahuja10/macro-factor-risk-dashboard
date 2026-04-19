@@ -1126,7 +1126,7 @@ The analysis confirms the hypothesis:
 
 ---
 
-st.markdown("""
+
 ## 💼 Business Impact
 
 This tool helps portfolio managers:
@@ -1137,7 +1137,7 @@ This tool helps portfolio managers:
 - Make data-driven rebalancing decisions  
 
 👉 This enables proactive risk management instead of reactive decision-making.
-""")
+
 
 
 ### 🔥 Final Takeaway
