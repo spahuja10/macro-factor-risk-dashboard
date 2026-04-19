@@ -927,7 +927,8 @@ st.info(f"""
 # REBALANCE
 # =========================
 new_weights = weights.copy()
-new_weights[dom_asset] *= 0.7
+reduction_factor = 1 - fc[top_factor]
+new_weights[dom_asset] *= reduction_factor
 new_weights /= np.sum(new_weights)
 
 # =========================
