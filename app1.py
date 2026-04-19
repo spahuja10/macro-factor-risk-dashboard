@@ -198,7 +198,22 @@ While average risk (VaR) looks manageable, the **CVaR tells a different story**:
 
 👉 This means the portfolio is more vulnerable to shocks than it appears.
 """)
+portfolio_value = 1_000_000  # $1M
 
+var_dollar = VaR_95 * portfolio_value
+cvar_dollar = CVaR_95 * portfolio_value
+
+col1, col2 = st.columns(2)
+col1.metric("VaR ($)", f"${var_dollar:,.0f}")
+col2.metric("CVaR ($)", f"${cvar_dollar:,.0f}")
+st.markdown("""
+### 💰 Dollar Impact
+
+- VaR shows expected worst-case loss under normal conditions  
+- CVaR shows average loss during extreme scenarios  
+
+👉 This translates percentage risk into real monetary impact.
+""")
 # =========================
 # 3. MONTE CARLO
 # =========================
