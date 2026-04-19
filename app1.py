@@ -129,6 +129,67 @@ But the key question is:
 """)
 
 # =========================
+# BENCHMARK COMPARISON
+# =========================
+st.header("📊 Portfolio vs Benchmark")
+
+# Custom benchmark (multi-asset)
+benchmark_weights = {
+    "^GSPC": 0.25,
+    "EEM": 0.25,
+    "LQD": 0.25,
+    "GLD": 0.25
+}
+
+bench_returns = sum(
+    returns[ticker] * weight for ticker, weight in benchmark_weights.items()
+)
+
+# Cumulative returns
+portfolio_series = returns_portfolio.dot(weights)
+
+cum_port = (1 + portfolio_series).cumprod()
+cum_bench = (1 + bench_returns).cumprod()
+
+fig, ax = plt.subplots(figsize=(5,3))
+
+cum_port.plot(ax=ax, label="Portfolio")
+cum_bench.plot(ax=ax, label="Benchmark")
+
+ax.set_title("Portfolio vs Balanced Benchmark")
+ax.set_ylabel("Growth of $1")
+ax.legend(fontsize=7)
+
+plt.tight_layout()
+
+col1, col2, col3 = st.columns([1,2,1])
+with col2:
+    st.pyplot(fig)
+
+# Metrics comparison
+bench_return = bench_returns.mean()
+bench_vol = bench_returns.std()
+
+col1, col2 = st.columns(2)
+col1.metric("Portfolio Return", f"{portfolio_return*100:.2f}%")
+col2.metric("Benchmark Return", f"{bench_return*100:.2f}%")
+
+col1, col2 = st.columns(2)
+col1.metric("Portfolio Volatility", f"{portfolio_vol*100:.2f}%")
+col2.metric("Benchmark Volatility", f"{bench_vol*100:.2f}%")
+
+# Interpretation
+st.markdown("""
+### 🧠 Benchmark Insight
+
+- Portfolio is compared against a balanced multi-asset benchmark  
+- This ensures a fair comparison across equities, bonds, and commodities  
+
+👉 Differences reflect portfolio positioning (defensive vs growth)
+""")
+
+
+# =========================
 # 2. RISK
 # =========================
 st.header("Risk (VaR & CVaR)")
