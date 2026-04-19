@@ -951,7 +951,7 @@ exp_compare = pd.DataFrame({
     "After": np.round(new_exposure, 3)
 })
 
-st.subheader("📊 Factor Exposure: Before vs After")
+st.subheader("📊 Factor Exposure: Before vs After REBALANCING")
 st.dataframe(exp_compare)
 
 # =========================
