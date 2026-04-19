@@ -133,28 +133,33 @@ But the key question is:
 # =========================
 st.header("📊 Portfolio vs Benchmark")
 
-# Custom benchmark (multi-asset)
+# 🔥 Use DIFFERENT weights from portfolio (important)
 benchmark_weights = {
-    "^GSPC": 0.25,
-    "EEM": 0.25,
-    "LQD": 0.25,
-    "GLD": 0.25
+    "^GSPC": 0.5,   # US Equity
+    "EEM": 0.1,     # Emerging Markets
+    "LQD": 0.3,     # Bonds
+    "GLD": 0.1      # Gold
 }
 
-bench_returns = sum(
-    returns[ticker] * weight for ticker, weight in benchmark_weights.items()
-)
+# Ensure correct alignment of data
+bench_assets = list(benchmark_weights.keys())
+bench_w = np.array(list(benchmark_weights.values()))
 
-# Cumulative returns
+# Calculate benchmark returns (safe + aligned)
+bench_returns = returns[bench_assets].dot(bench_w)
+
+# Portfolio returns
 portfolio_series = returns_portfolio.dot(weights)
 
+# Cumulative returns
 cum_port = (1 + portfolio_series).cumprod()
 cum_bench = (1 + bench_returns).cumprod()
 
+# Plot comparison
 fig, ax = plt.subplots(figsize=(5,3))
 
-cum_port.plot(ax=ax, label="Portfolio")
-cum_bench.plot(ax=ax, label="Benchmark")
+cum_port.plot(ax=ax, label="Portfolio", linewidth=2)
+cum_bench.plot(ax=ax, label="Balanced Benchmark", linewidth=2)
 
 ax.set_title("Portfolio vs Balanced Benchmark")
 ax.set_ylabel("Growth of $1")
@@ -162,11 +167,20 @@ ax.legend(fontsize=7)
 
 plt.tight_layout()
 
+# Center chart
 col1, col2, col3 = st.columns([1,2,1])
 with col2:
     st.pyplot(fig)
 
-# Metrics comparison
+# =========================
+# METRICS COMPARISON
+# =========================
+
+# Portfolio metrics (already computed above)
+# portfolio_return
+# portfolio_vol
+
+# Benchmark metrics
 bench_return = bench_returns.mean()
 bench_vol = bench_returns.std()
 
@@ -178,16 +192,85 @@ col1, col2 = st.columns(2)
 col1.metric("Portfolio Volatility", f"{portfolio_vol*100:.2f}%")
 col2.metric("Benchmark Volatility", f"{bench_vol*100:.2f}%")
 
-# Interpretation
+# =========================
+# SHARPE RATIO
+# =========================
+
+# Assume risk-free rate = 0 for simplicity
+rf = 0
+
+sharpe_port = (portfolio_return - rf) / portfolio_vol
+sharpe_bench = (bench_return - rf) / bench_vol
+
+col1, col2 = st.columns(2)
+col1.metric("Portfolio Sharpe", f"{sharpe_port:.2f}")
+col2.metric("Benchmark Sharpe", f"{sharpe_bench:.2f}")
+
+st.markdown("""
+### 📈 Risk-Adjusted Performance
+
+- Sharpe ratio measures return per unit of risk  
+
+👉 Higher Sharpe = better efficiency  
+
+This helps evaluate whether returns justify the risk taken.
+""")
+
+# =========================
+# DRAWDOWN ANALYSIS
+# =========================
+
+def drawdown(series):
+    cum = (1 + series).cumprod()
+    peak = cum.cummax()
+    dd = (cum - peak) / peak
+    return dd
+
+dd_port = drawdown(portfolio_series)
+dd_bench = drawdown(bench_returns)
+
+fig, ax = plt.subplots(figsize=(5,3))
+
+dd_port.plot(ax=ax, label="Portfolio")
+dd_bench.plot(ax=ax, label="Benchmark")
+
+ax.set_title("Drawdown Comparison")
+ax.set_ylabel("Drawdown")
+ax.legend(fontsize=7)
+
+plt.tight_layout()
+
+col1, col2, col3 = st.columns([1,2,1])
+with col2:
+    st.pyplot(fig)
+
+st.markdown("""
+### 📉 Downside Risk Insight
+
+- Drawdown shows worst losses from peak  
+- Helps understand real investor experience  
+
+👉 Lower drawdown = better downside protection  
+""")
+
+# =========================
+# INTERPRETATION
+# =========================
 st.markdown("""
 ### 🧠 Benchmark Insight
 
-- Portfolio is compared against a balanced multi-asset benchmark  
+- Benchmark is constructed using a realistic multi-asset allocation  
 - This ensures a fair comparison across equities, bonds, and commodities  
 
-👉 Differences reflect portfolio positioning (defensive vs growth)
+👉 Differences reflect portfolio positioning:
+
+- Higher returns → growth-oriented  
+- Lower volatility → defensive positioning  
 """)
 
+st.caption("""
+Note: Benchmark uses a different allocation than the portfolio to ensure meaningful comparison.
+""")
 
 # =========================
 # 2. RISK
@@ -1105,7 +1188,6 @@ st.markdown(f"""
 st.header("🧪 Hypothesis Outcome")
 
 st.markdown("""
-
 ### Result: ✔ Supported
 
 The analysis confirms the hypothesis:
@@ -1114,19 +1196,26 @@ The analysis confirms the hypothesis:
 - **Exposure vs Risk mismatch** revealed that the largest positions are not always the main sources of risk  
 - **Event Analysis** demonstrated that during crisis periods, these macro factors become even more dominant  
 - **Factor Shift & Scenario Analysis** showed that risk drivers change dynamically under stress  
+""")
 
----
+# =========================
+# WHAT THIS MEANS
+# =========================
 
+st.markdown("""
 ### 🧠 What this means
 
 👉 Diversification across assets does not guarantee diversification across risk factors  
 
 👉 During normal periods, risk appears stable  
 👉 During crises, hidden macro drivers dominate portfolio behavior  
+""")
 
----
+# =========================
+# BUSINESS IMPACT
+# =========================
 
-
+st.markdown("""
 ## 💼 Business Impact
 
 This tool helps portfolio managers:
@@ -1137,15 +1226,19 @@ This tool helps portfolio managers:
 - Make data-driven rebalancing decisions  
 
 👉 This enables proactive risk management instead of reactive decision-making.
+""")
 
+# =========================
+# FINAL TAKEAWAY
+# =========================
 
-
+st.markdown("""
 ### 🔥 Final Takeaway
 
 👉 It’s not about how many assets you hold  
-👉 It’s about how your portfolio is exposed to underlying macro factors  
+👉 It’s about what actually drives your portfolio  
 
-👉 True risk management requires understanding and balancing these drivers
+👉 True risk management requires understanding and balancing macro factors
 """)
 
 
