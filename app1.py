@@ -921,6 +921,8 @@ dominant_factor_name = factor_labels[top_factor]
 st.info(f"""
 👉 Dominant Risk Factor: **{dominant_factor_name}**  
 👉 Key Driver: **{asset_name}**
+
+Reduce the factor weight proportional to its contribution to portfolio risk for rebalancing
 """)
 
 # =========================
