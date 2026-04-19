@@ -1126,6 +1126,20 @@ The analysis confirms the hypothesis:
 
 ---
 
+st.markdown("""
+## 💼 Business Impact
+
+This tool helps portfolio managers:
+
+- Identify hidden macro risk drivers  
+- Understand behavior during stress events  
+- Quantify potential losses in dollar terms  
+- Make data-driven rebalancing decisions  
+
+👉 This enables proactive risk management instead of reactive decision-making.
+""")
+
+
 ### 🔥 Final Takeaway
 
 👉 It’s not about how many assets you hold  
