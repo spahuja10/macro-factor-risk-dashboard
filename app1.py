@@ -47,16 +47,32 @@ st.header("Market Universe")
 
 st.markdown("""
 **Portfolio Assets:**
-- Equities: S&P 500 (^GSPC), EEM, XLV  
-- Bonds: LQD, HYG, EMB  
-- Commodities: GLD (Gold), USO (Oil)  
 
-**Macro Variables:**
-- VIX → Market Fear  
-- TNX → Interest Rates  
-- DXY → Dollar  
+### 📈 Equities
+- **S&P 500 Index (^GSPC)** → Broad U.S. equity market  
+- **iShares MSCI Emerging Markets ETF (EEM)** → Emerging market equities  
+- **Health Care Select Sector SPDR Fund (XLV)** → Defensive sector exposure  
 
-**Portfolio Time Period:** Start date: 01-01-2014 – 04-01-2026  
+### 🏦 Fixed Income (Bonds)
+- **iShares iBoxx Investment Grade Corporate Bond ETF (LQD)** → High-quality corporate bonds  
+- **iShares iBoxx High Yield Corporate Bond ETF (HYG)** → Higher-yield, riskier corporate bonds  
+- **iShares J.P. Morgan USD Emerging Markets Bond ETF (EMB)** → Emerging market debt  
+
+### 🛢️ Commodities
+- **SPDR Gold Shares (GLD)** → Safe-haven asset  
+- **United States Oil Fund (USO)** → Oil price exposure  
+
+---
+
+### 🌍 Macro Variables
+- **CBOE Volatility Index (^VIX)** → Market fear / volatility  
+- **10-Year Treasury Yield (^TNX)** → Interest rates  
+- **US Dollar Index (DX-Y.NYB)** → Currency strength  
+
+---
+
+### 📅 Time Period
+Start: 01-01-2014 → Present
 """)
 
 # =========================
